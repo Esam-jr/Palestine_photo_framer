@@ -7,6 +7,17 @@ interface FrameSelectorProps {
   onFrameSelect: (frame: Frame) => void;
 }
 
+// Helper function to get frame type description
+const getFrameTypeDescription = (frameId: string): string => {
+  if (frameId === 'frame1' || frameId === 'frame3') {
+    return 'Circular • Profile Picture';
+  }
+  if (['frame2', 'frame4', 'frame5', 'frame6'].includes(frameId)) {
+    return 'Bottom Aligned • Full Image';
+  }
+  return 'Standard Frame';
+};
+
 const FrameSelector: React.FC<FrameSelectorProps> = ({
   frames,
   selectedFrame,
@@ -57,9 +68,14 @@ const FrameSelector: React.FC<FrameSelectorProps> = ({
               </div>
             )}
           </div>
-          <p className="text-sm font-medium text-gray-300 group-hover:text-white transition-colors duration-200 truncate">
-            {frame.name}
-          </p>
+          <div className="text-center">
+            <p className="text-sm font-medium text-gray-300 group-hover:text-white transition-colors duration-200 truncate mb-1">
+              {frame.name}
+            </p>
+            <p className="text-xs text-gray-500 group-hover:text-gray-400 transition-colors duration-200">
+              {getFrameTypeDescription(frame.id)}
+            </p>
+          </div>
         </button>
       ))}
     </div>

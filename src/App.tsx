@@ -185,7 +185,7 @@ function App() {
                     className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-medium rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 text-base"
                   >
                     <Download className="w-4 h-4 mr-2" />
-                    Download Framed Photo
+                    Download {selectedFrame.id === 'frame1' || selectedFrame.id === 'frame3' ? 'Profile Picture' : 'Framed Photo'}
                   </button>
                 )}
               </div>
@@ -207,6 +207,13 @@ function App() {
                       <p className="text-gray-500 text-sm mt-1">
                         JPEG or PNG files supported
                       </p>
+                      {selectedFrame && (
+                        <p className="text-gray-500 text-xs mt-2">
+                          {selectedFrame.id === 'frame1' || selectedFrame.id === 'frame3' 
+                            ? 'Circular frames create perfect profile pictures' 
+                            : 'Frame will be positioned at the bottom of your image'}
+                        </p>
+                      )}
                     </div>
                   </div>
                 )}
