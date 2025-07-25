@@ -24,7 +24,12 @@ const ImageCanvas = forwardRef<HTMLCanvasElement, ImageCanvasProps>(
 
     // Helper function to determine if frame should be bottom-center aligned
     const isBottomCenterFrame = (frameId: string): boolean => {
-      return ['frame4', 'frame5', 'frame6'].includes(frameId);
+      return frameId === 'frame4';
+    };
+
+    // Helper function to determine if frame should be bottom-left aligned
+    const isBottomLeftFrame = (frameId: string): boolean => {
+      return ['frame2', 'frame5', 'frame6'].includes(frameId);
     };
 
     // Function to draw circular cropped image
@@ -123,6 +128,33 @@ const ImageCanvas = forwardRef<HTMLCanvasElement, ImageCanvasProps>(
       ctx.drawImage(frameImg, frameX, frameY, frameWidth, frameHeight);
     };
 
+    // Function to draw bottom-left large frames (Frame 5, 6)
+    const drawBottomLeftLargeFrame = (
+      ctx: CanvasRenderingContext2D,
+      img: HTMLImageElement,
+      frameImg: HTMLImageElement,
+      canvasWidth: number,
+      canvasHeight: number
+    ) => {
+      // Draw the full image first
+      ctx.drawImage(img, 0, 0, canvasWidth, canvasHeight);
+
+      // Calculate frame dimensions - make them larger and maintain aspect ratio
+      const frameAspect = frameImg.width / frameImg.height;
+      
+      // Use 70% of canvas width or maintain original size if smaller
+      const maxFrameWidth = Math.min(canvasWidth * 0.7, frameImg.width);
+      const frameWidth = maxFrameWidth;
+      const frameHeight = frameWidth / frameAspect;
+
+      // Position frame at bottom left with minimal padding
+      const frameX = 10; // Small left padding
+      const frameY = canvasHeight - frameHeight - 10; // Only 10px padding from bottom
+
+      // Draw the frame
+      ctx.drawImage(frameImg, frameX, frameY, frameWidth, frameHeight);
+    };
+
     useEffect(() => {
       const canvas = canvasRef.current;
       if (!canvas || !imageUrl) return;
@@ -190,17 +222,22 @@ const ImageCanvas = forwardRef<HTMLCanvasElement, ImageCanvasProps>(
           // Handle regular frames - draw image first
           ctx.drawImage(img, 0, 0, canvasWidth, canvasHeight);
 
-          // Apply frame based on type
           if (frame && isBottomLeftFrame(frame.id)) {
-            // Frame 2 - bottom-left, full size
+            // Frames 2, 5, 6 - bottom-left positioning
             const frameImg = new Image();
             frameImg.onload = () => {
-              drawBottomLeftFrame(ctx, img, frameImg, canvasWidth, canvasHeight);
+              if (frame.id === 'frame2') {
+                // Frame 2 - full size coverage
+                drawBottomLeftFrame(ctx, img, frameImg, canvasWidth, canvasHeight);
+              } else {
+                // Frames 5, 6 - large size, bottom-left
+                drawBottomLeftLargeFrame(ctx, img, frameImg, canvasWidth, canvasHeight);
+              }
             };
             frameImg.crossOrigin = 'anonymous';
             frameImg.src = frame.imageUrl;
           } else if (frame && isBottomCenterFrame(frame.id)) {
-            // Frames 4, 5, 6 - bottom-center, larger size
+            // Frame 4 - bottom-center, larger size
             const frameImg = new Image();
             frameImg.onload = () => {
               drawBottomCenterFrame(ctx, img, frameImg, canvasWidth, canvasHeight);

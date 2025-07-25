@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Upload, Download, Image as ImageIcon, Heart } from "lucide-react";
+import { Upload, Download, Image as ImageIcon, Heart, Github } from "lucide-react";
 import ImageUpload from "./components/ImageUpload";
 import FrameSelector from "./components/FrameSelector";
 import ImageCanvas from "./components/ImageCanvas";
@@ -214,6 +214,10 @@ function App() {
                             ? 'Circular frames create perfect profile pictures' 
                             : selectedFrame.id === 'frame2'
                             ? 'Frame will cover the full image with bottom-left alignment'
+                            : selectedFrame.id === 'frame4'
+                            ? 'Frame will be positioned at the bottom center of your image'
+                            : selectedFrame.id === 'frame5' || selectedFrame.id === 'frame6'
+                            ? 'Frame will be positioned at the bottom left of your image'
                             : 'Frame will be positioned at the bottom center of your image'}
                         </p>
                       )}
@@ -245,8 +249,15 @@ function App() {
               href="https://www.healpalestine.org/donate/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group bg-gray-900 border border-gray-800 rounded-2xl p-4 sm:p-6 hover:border-red-600 transition-all duration-300 hover:shadow-lg hover:shadow-red-600/25 transform hover:scale-105"
+              className="group relative bg-gray-900 border border-gray-800 rounded-2xl p-4 sm:p-6 hover:border-red-600 transition-all duration-500 hover:shadow-lg hover:shadow-red-600/25 transform hover:scale-105 overflow-hidden"
+              style={{
+                backgroundImage: 'url(https://images.pexels.com/photos/6646918/pexels-photo-6646918.jpeg?auto=compress&cs=tinysrgb&w=400)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+              }}
             >
+              <div className="absolute inset-0 bg-black/70 group-hover:bg-black/50 transition-all duration-500"></div>
+              <div className="relative z-10">
               <div className="flex items-center mb-3 sm:mb-4">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-red-600 rounded-full flex items-center justify-center mr-3 sm:mr-4">
                   <Heart className="w-5 h-5 sm:w-6 sm:h-6 text-white fill-current" />
@@ -262,6 +273,7 @@ function App() {
                 Providing medical aid and healthcare support to Palestinians in
                 need.
               </p>
+              </div>
             </a>
 
             {/* PCRF */}
@@ -269,8 +281,15 @@ function App() {
               href="https://www.pcrf.net/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group bg-gray-900 border border-gray-800 rounded-2xl p-4 sm:p-6 hover:border-green-600 transition-all duration-300 hover:shadow-lg hover:shadow-green-600/25 transform hover:scale-105"
+              className="group relative bg-gray-900 border border-gray-800 rounded-2xl p-4 sm:p-6 hover:border-green-600 transition-all duration-500 hover:shadow-lg hover:shadow-green-600/25 transform hover:scale-105 overflow-hidden"
+              style={{
+                backgroundImage: 'url(https://images.pexels.com/photos/8363028/pexels-photo-8363028.jpeg?auto=compress&cs=tinysrgb&w=400)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+              }}
             >
+              <div className="absolute inset-0 bg-black/70 group-hover:bg-black/50 transition-all duration-500"></div>
+              <div className="relative z-10">
               <div className="flex items-center mb-3 sm:mb-4">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-600 rounded-full flex items-center justify-center mr-3 sm:mr-4">
                   <Heart className="w-5 h-5 sm:w-6 sm:h-6 text-white fill-current" />
@@ -286,6 +305,7 @@ function App() {
                 Palestine Children's Relief Fund - Supporting children and
                 families.
               </p>
+              </div>
             </a>
 
             {/* Islamic Relief */}
@@ -293,8 +313,15 @@ function App() {
               href="https://islamic-relief.org/appeals/palestine-emergency-appeal/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group bg-gray-900 border border-gray-800 rounded-2xl p-4 sm:p-6 hover:border-white transition-all duration-300 hover:shadow-lg hover:shadow-white/25 transform hover:scale-105 sm:col-span-2 lg:col-span-1"
+              className="group relative bg-gray-900 border border-gray-800 rounded-2xl p-4 sm:p-6 hover:border-white transition-all duration-500 hover:shadow-lg hover:shadow-white/25 transform hover:scale-105 sm:col-span-2 lg:col-span-1 overflow-hidden"
+              style={{
+                backgroundImage: 'url(https://images.pexels.com/photos/6646917/pexels-photo-6646917.jpeg?auto=compress&cs=tinysrgb&w=400)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+              }}
             >
+              <div className="absolute inset-0 bg-black/70 group-hover:bg-black/50 transition-all duration-500"></div>
+              <div className="relative z-10">
               <div className="flex items-center mb-3 sm:mb-4">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full flex items-center justify-center mr-3 sm:mr-4">
                   <Heart className="w-5 h-5 sm:w-6 sm:h-6 text-black fill-current" />
@@ -309,6 +336,7 @@ function App() {
               <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
                 Emergency relief and humanitarian aid for Palestine crisis.
               </p>
+              </div>
             </a>
           </div>
         </div>
@@ -317,7 +345,8 @@ function App() {
       {/* Footer */}
       <footer className="bg-gray-900 border-t border-gray-800 mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-          <div className="text-center">
+          <div className="flex flex-col sm:flex-row items-center justify-between">
+            <div className="text-center sm:text-left mb-4 sm:mb-0">
             <div className="flex justify-center items-center space-x-2 mb-3 sm:mb-4">
               <Heart className="w-5 h-5 text-red-600 fill-current" />
               <span className="text-gray-400 text-sm sm:text-base">
@@ -328,6 +357,18 @@ function App() {
             <p className="text-gray-500 text-xs sm:text-sm px-4">
               Frame your memories • Preserve your heritage • Share your story
             </p>
+            </div>
+            <div className="flex items-center space-x-4">
+              <a
+                href="https://github.com/your-username/palestine-photo-framer"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center space-x-2 text-gray-400 hover:text-white transition-colors duration-200"
+              >
+                <Github className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
+                <span className="text-sm hidden sm:inline">View on GitHub</span>
+              </a>
+            </div>
           </div>
         </div>
       </footer>
