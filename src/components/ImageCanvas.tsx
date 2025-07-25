@@ -1,5 +1,5 @@
-import React, { useEffect, useImperativeHandle, forwardRef } from 'react';
-import type { Frame } from '../App';
+import React, { useEffect, useImperativeHandle, forwardRef } from "react";
+import type { Frame } from "../App";
 
 interface ImageCanvasProps {
   imageUrl: string;
@@ -12,54 +12,188 @@ const ImageCanvas = forwardRef<HTMLCanvasElement, ImageCanvasProps>(
 
     useImperativeHandle(ref, () => canvasRef.current!);
 
+    // Helper function to determine if frame is circular
+    const isCircularFrame = (frameId: string): boolean => {
+      return frameId === "frame1" || frameId === "frame3";
+    };
+
+    // Helper function to determine if frame should be bottom-aligned
+    const isBottomAlignedFrame = (frameId: string): boolean => {
+      return ["frame2", "frame4", "frame5", "frame6"].includes(frameId);
+    };
+
+    // Function to draw circular cropped image
+    const drawCircularImage = (
+      ctx: CanvasRenderingContext2D,
+      img: HTMLImageElement,
+      canvasWidth: number,
+      canvasHeight: number
+    ) => {
+      // Make canvas square for profile picture format
+      const size = Math.min(canvasWidth, canvasHeight);
+      const centerX = size / 2;
+      const centerY = size / 2;
+      const radius = size / 2 - 20; // Leave some padding for the frame
+
+      // Calculate scaling to fill the circle while maintaining aspect ratio
+      const imgAspect = img.width / img.height;
+      let drawWidth, drawHeight;
+
+      if (imgAspect > 1) {
+        // Image is wider than tall
+        drawHeight = radius * 2;
+        drawWidth = drawHeight * imgAspect;
+      } else {
+        // Image is taller than wide or square
+        drawWidth = radius * 2;
+        drawHeight = drawWidth / imgAspect;
+      }
+
+      // Center the image
+      const drawX = centerX - drawWidth / 2;
+      const drawY = centerY - drawHeight / 2;
+
+      // Save context state
+      ctx.save();
+
+      // Create circular clipping path
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+      ctx.clip();
+
+      // Draw the image within the circular clip
+      ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
+
+      // Restore context state
+      ctx.restore();
+
+      return size;
+    };
+
+    // Function to draw bottom-aligned frame
+    const drawBottomAlignedImage = (
+      ctx: CanvasRenderingContext2D,
+      img: HTMLImageElement,
+      frameImg: HTMLImageElement,
+      canvasWidth: number,
+      canvasHeight: number
+    ) => {
+      // Draw the full image first
+      ctx.drawImage(img, 0, 0, canvasWidth, canvasHeight);
+
+      // Calculate frame dimensions (scale to be proportional to image width)
+      const frameScale = Math.min(canvasWidth * 0.4, 300); // Max 40% of width or 300px
+      const frameAspect = frameImg.width / frameImg.height;
+      const frameWidth = frameScale;
+      const frameHeight = frameScale / frameAspect;
+
+      // Position frame at bottom center
+      const frameX = (canvasWidth - frameWidth) / 2;
+      const frameY = canvasHeight - frameHeight - 20; // 20px padding from bottom
+
+      // Draw the frame
+      ctx.drawImage(frameImg, frameX, frameY, frameWidth, frameHeight);
+    };
+
     useEffect(() => {
       const canvas = canvasRef.current;
       if (!canvas || !imageUrl) return;
 
-      const ctx = canvas.getContext('2d');
+      const ctx = canvas.getContext("2d");
       if (!ctx) return;
 
       const img = new Image();
       img.onload = () => {
-        // Set canvas size to maintain aspect ratio
-        const maxWidth = 800;
-        const maxHeight = 600;
-        
-        let { width, height } = img;
-        
-        // Scale down if too large
-        if (width > maxWidth) {
-          height = (height * maxWidth) / width;
-          width = maxWidth;
-        }
-        
-        if (height > maxHeight) {
-          width = (width * maxHeight) / height;
-          height = maxHeight;
+        let canvasWidth, canvasHeight;
+
+        // Determine canvas dimensions based on frame type
+        if (frame && isCircularFrame(frame.id)) {
+          // For circular frames, use square canvas (profile picture format)
+          const maxSize = Math.min(600, Math.max(img.width, img.height));
+          canvasWidth = canvasHeight = maxSize;
+        } else {
+          // For other frames, maintain original aspect ratio with max dimensions
+          const maxWidth = 800;
+          const maxHeight = 600;
+
+          let { width, height } = img;
+
+          // Scale down if too large
+          if (width > maxWidth) {
+            height = (height * maxWidth) / width;
+            width = maxWidth;
+          }
+
+          if (height > maxHeight) {
+            width = (width * maxHeight) / height;
+            height = maxHeight;
+          }
+
+          canvasWidth = width;
+          canvasHeight = height;
         }
 
-        canvas.width = width;
-        canvas.height = height;
+        canvas.width = canvasWidth;
+        canvas.height = canvasHeight;
 
         // Clear canvas
-        ctx.clearRect(0, 0, width, height);
+        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
-        // Draw the base image
-        ctx.drawImage(img, 0, 0, width, height);
+        if (frame && isCircularFrame(frame.id)) {
+          // Handle circular frames
+          const actualSize = drawCircularImage(
+            ctx,
+            img,
+            canvasWidth,
+            canvasHeight
+          );
 
-        // Apply frame if selected
-        if (frame) {
+          // Update canvas size to the actual square size used
+          if (actualSize !== canvasWidth) {
+            canvas.width = actualSize;
+            canvas.height = actualSize;
+            ctx.clearRect(0, 0, actualSize, actualSize);
+            drawCircularImage(ctx, img, actualSize, actualSize);
+          }
+
+          // Load and draw the circular frame
           const frameImg = new Image();
           frameImg.onload = () => {
-            // Draw frame on top of the image
-            ctx.drawImage(frameImg, 0, 0, width, height);
+            ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
           };
-          frameImg.crossOrigin = 'anonymous';
+          frameImg.crossOrigin = "anonymous";
           frameImg.src = frame.imageUrl;
+        } else {
+          // Handle regular frames - draw image first
+          ctx.drawImage(img, 0, 0, canvasWidth, canvasHeight);
+
+          // Apply frame if selected and it's a bottom-aligned frame
+          if (frame && isBottomAlignedFrame(frame.id)) {
+            const frameImg = new Image();
+            frameImg.onload = () => {
+              drawBottomAlignedImage(
+                ctx,
+                img,
+                frameImg,
+                canvasWidth,
+                canvasHeight
+              );
+            };
+            frameImg.crossOrigin = "anonymous";
+            frameImg.src = frame.imageUrl;
+          } else if (frame) {
+            // Fallback for any other frame types - overlay on top
+            const frameImg = new Image();
+            frameImg.onload = () => {
+              ctx.drawImage(frameImg, 0, 0, canvasWidth, canvasHeight);
+            };
+            frameImg.crossOrigin = "anonymous";
+            frameImg.src = frame.imageUrl;
+          }
         }
       };
 
-      img.crossOrigin = 'anonymous';
+      img.crossOrigin = "anonymous";
       img.src = imageUrl;
     }, [imageUrl, frame]);
 
@@ -68,13 +202,13 @@ const ImageCanvas = forwardRef<HTMLCanvasElement, ImageCanvasProps>(
         <canvas
           ref={canvasRef}
           className="max-w-full h-auto rounded-xl shadow-2xl border border-gray-700"
-          style={{ maxHeight: '600px' }}
+          style={{ maxHeight: "600px" }}
         />
       </div>
     );
   }
 );
 
-ImageCanvas.displayName = 'ImageCanvas';
+ImageCanvas.displayName = "ImageCanvas";
 
 export default ImageCanvas;
