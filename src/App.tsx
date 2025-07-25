@@ -132,9 +132,9 @@ function App() {
               <div className="relative">
                 {/* Placeholder for hero image - to be added later */}
                 <img
-                  src="/photos/TRC.png"
+                  src="/photos/hero.png"
                   alt="Logo"
-                  className="w-[16rem] h-auto rotate-[10deg]"
+                  className="w-[30rem] h-auto "
                 />
                 {/* Decorative elements */}
                 <div className="absolute -top-4 -right-4 w-8 h-8 bg-red-600 rounded-full opacity-60"></div>
@@ -145,8 +145,6 @@ function App() {
           </div>
         </div>
       </section>
-
-      {/* Support Palestine Section */}
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-6 xl:grid xl:grid-cols-3 xl:gap-8 xl:space-y-0">
@@ -217,6 +215,94 @@ function App() {
           </div>
         </div>
       </main>
+      <section className="py-16 bg-gradient-to-r from-red-900/20 via-black to-green-900/20 border-y border-gray-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 bg-gradient-to-r from-red-500 via-white to-green-500 bg-clip-text text-transparent">
+              Support Palestine
+            </h2>
+            <p className="text-gray-300 text-lg mb-2">
+              Help those in need with your donation
+            </p>
+            <p className="text-gray-400 text-sm">
+              Every contribution makes a difference
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Heal Palestine */}
+            <a
+              href="https://www.healpalestine.org/donate/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group bg-gray-900 border border-gray-800 rounded-2xl p-6 hover:border-red-600 transition-all duration-300 hover:shadow-lg hover:shadow-red-600/25 transform hover:scale-105"
+            >
+              <div className="flex items-center mb-4">
+                <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center mr-4">
+                  <Heart className="w-6 h-6 text-white fill-current" />
+                </div>
+                <div>
+                  <h3 className="text-white font-semibold group-hover:text-red-400 transition-colors">
+                    Heal Palestine
+                  </h3>
+                  <p className="text-gray-400 text-sm">Medical Aid</p>
+                </div>
+              </div>
+              <p className="text-gray-300 text-sm leading-relaxed">
+                Providing medical aid and healthcare support to Palestinians in
+                need.
+              </p>
+            </a>
+
+            {/* PCRF */}
+            <a
+              href="https://www.pcrf.net/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group bg-gray-900 border border-gray-800 rounded-2xl p-6 hover:border-green-600 transition-all duration-300 hover:shadow-lg hover:shadow-green-600/25 transform hover:scale-105"
+            >
+              <div className="flex items-center mb-4">
+                <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center mr-4">
+                  <Heart className="w-6 h-6 text-white fill-current" />
+                </div>
+                <div>
+                  <h3 className="text-white font-semibold group-hover:text-green-400 transition-colors">
+                    PCRF
+                  </h3>
+                  <p className="text-gray-400 text-sm">Children's Relief</p>
+                </div>
+              </div>
+              <p className="text-gray-300 text-sm leading-relaxed">
+                Palestine Children's Relief Fund - Supporting children and
+                families.
+              </p>
+            </a>
+
+            {/* Islamic Relief */}
+            <a
+              href="https://islamic-relief.org/appeals/palestine-emergency-appeal/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group bg-gray-900 border border-gray-800 rounded-2xl p-6 hover:border-white transition-all duration-300 hover:shadow-lg hover:shadow-white/25 transform hover:scale-105 sm:col-span-2 lg:col-span-1"
+            >
+              <div className="flex items-center mb-4">
+                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mr-4">
+                  <Heart className="w-6 h-6 text-black fill-current" />
+                </div>
+                <div>
+                  <h3 className="text-white font-semibold group-hover:text-gray-300 transition-colors">
+                    Islamic Relief
+                  </h3>
+                  <p className="text-gray-400 text-sm">Emergency Appeal</p>
+                </div>
+              </div>
+              <p className="text-gray-300 text-sm leading-relaxed">
+                Emergency relief and humanitarian aid for Palestine crisis.
+              </p>
+            </a>
+          </div>
+        </div>
+      </section>
 
       {/* Footer */}
       <footer className="bg-gray-900 border-t border-gray-800 mt-16">
