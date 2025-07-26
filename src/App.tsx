@@ -98,7 +98,12 @@ function App() {
               </div>
             </div>
             <div className="w-8 h-8  flex items-center justify-center">
-              <img src="/photos/TRC1.png" alt="Logo" className="w-12 h-auto" />
+              <img
+                src="/photos/TRC1.png"
+                alt="Logo"
+                className="w-12 h-auto"
+                loading="lazy"
+              />
             </div>
           </div>
         </div>
@@ -141,6 +146,7 @@ function App() {
                   src="/photos/hero.png"
                   alt="Logo"
                   className="w-[30rem] h-auto "
+                  loading="lazy"
                 />
                 {/* Decorative elements */}
                 <div className="absolute -top-4 -right-4 w-8 h-8 bg-red-600 rounded-full opacity-60"></div>
@@ -260,8 +266,6 @@ function App() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {/* Image Upload */}
-            {/* Heal Palestine */}
             <a
               href="https://www.healpalestine.org/donate/"
               target="_blank"
