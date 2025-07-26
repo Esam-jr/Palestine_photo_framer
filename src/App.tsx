@@ -24,23 +24,28 @@ function App() {
   const [frames, setFrames] = useState<Frame[]>([]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  // Load frames from public/photos folder
   useEffect(() => {
     const loadFrames = async () => {
-      const frameFiles = [
-        "frame1.png",
-        "frame2.png",
-        "frame3.png",
-        "frame4.png",
-        "frame5.png",
-        "frame6.png",
-      ];
+      const frameFiles: Record<string, string> = {
+        "frame1.png":
+          "https://ik.imagekit.io/wu2csfu8g/palastine/frame1.png?updatedAt=1753522196715",
+        "frame2.png":
+          "https://ik.imagekit.io/wu2csfu8g/palastine/frame2.png?updatedAt=1753522197849",
+        "frame3.png":
+          "https://ik.imagekit.io/wu2csfu8g/palastine/frame3.png?updatedAt=1753522198393",
+        "frame4.png":
+          "https://ik.imagekit.io/wu2csfu8g/palastine/frame4.png?updatedAt=1753522196342",
+        "frame5.png":
+          "https://ik.imagekit.io/wu2csfu8g/palastine/frame5.png?updatedAt=1753522195939",
+        "frame6.png":
+          "https://ik.imagekit.io/wu2csfu8g/palastine/frame6.png?updatedAt=1753522197548",
+      };
 
       const loadedFrames: Frame[] = [];
 
-      for (const file of frameFiles) {
+      for (const [file, imageUrl] of Object.entries(frameFiles)) {
         try {
-          const response = await fetch(`/photos/${file}`);
+          const response = await fetch(imageUrl);
           if (response.ok) {
             loadedFrames.push({
               id: file.replace(".png", ""),
@@ -48,7 +53,7 @@ function App() {
                 .replace(".png", "")
                 .replace(/([A-Z])/g, " $1")
                 .replace(/^./, (str) => str.toUpperCase()),
-              imageUrl: `/photos/${file}`,
+              imageUrl,
             });
           }
         } catch (error) {
@@ -143,7 +148,7 @@ function App() {
               <div className="relative">
                 {/* Placeholder for hero image - to be added later */}
                 <img
-                  src="/photos/hero.png"
+                  src="https://ik.imagekit.io/wu2csfu8g/palastine/hero.png?updatedAt=1753522197425"
                   alt="Logo"
                   className="w-[30rem] h-auto "
                   loading="lazy"
