@@ -90,15 +90,15 @@ function App() {
               <PalestineFlag className="w-12 h-8" />
               <div>
                 <h1 className="text-xl sm:text-2xl font-bold text-white">
-                  Palestine Photo Framer
+                  Palestine Profile Framer
                 </h1>
                 <p className="text-sm text-gray-400 hidden sm:block">
-                  Frame your memories with Palestinian pride
+                  Frame your profile with Palestinian pride
                 </p>
               </div>
             </div>
             <div className="w-8 h-8  flex items-center justify-center">
-              <img src="/photos/TRC.png" alt="Logo" className="w-8 h-8" />
+              <img src="/photos/TRC1.png" alt="Logo" className="w-12 h-auto" />
             </div>
           </div>
         </div>
@@ -113,7 +113,7 @@ function App() {
             <div className="text-center lg:text-left">
               <div className="mb-8">
                 <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-red-500 via-white to-green-500 bg-clip-text text-transparent leading-tight">
-                  Frame Your Story
+                  Frame Your Profile
                 </h2>
                 <p className="text-lg sm:text-xl text-gray-300 mb-4 leading-relaxed">
                   Add beautiful Palestinian-inspired frames to your photos
@@ -371,8 +371,8 @@ function App() {
       {/* Footer */}
       <footer className="bg-gray-900 border-t border-gray-800 mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-          <div className="flex flex-col sm:flex-row items-center justify-between">
-            <div className="text-center sm:text-left mb-4 sm:mb-0">
+          <div className="relative flex flex-col items-center sm:flex-row sm:justify-center sm:items-center">
+            <div className="text-center">
               <div className="flex justify-center items-center space-x-2 mb-3 sm:mb-4">
                 <Heart className="w-5 h-5 text-red-600 fill-current" />
                 <span className="text-gray-400 text-sm sm:text-base">
@@ -381,10 +381,10 @@ function App() {
                 <Heart className="w-5 h-5 text-red-600 fill-current" />
               </div>
               <p className="text-gray-500 text-xs sm:text-sm px-4">
-                Frame your memories • Preserve your heritage • Share your story
+                Represent Palestine by framing your profile • Inspire unity
               </p>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 pr-2">
               <a
                 href="https://github.com/your-username/palestine-photo-framer"
                 target="_blank"
@@ -392,7 +392,6 @@ function App() {
                 className="group flex items-center space-x-2 text-gray-400 hover:text-white transition-colors duration-200"
               >
                 <Github className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
-                <span className="text-sm hidden sm:inline">View on GitHub</span>
               </a>
             </div>
           </div>
