@@ -17,9 +17,14 @@ const ImageCanvas = forwardRef<HTMLCanvasElement, ImageCanvasProps>(
       return frameId === "frame1" || frameId === "frame3";
     };
 
-    // Helper function to determine if frame should be bottom-aligned
-    const isBottomAlignedFrame = (frameId: string): boolean => {
-      return ["frame2", "frame4", "frame5", "frame6"].includes(frameId);
+    // Helper function to determine if frame should be bottom-left aligned
+    const isBottomLeftFrame = (frameId: string): boolean => {
+      return ["frame2", "frame5", "frame6"].includes(frameId);
+    };
+
+    // Helper function to determine if frame should be bottom-center aligned
+    const isBottomCenterFrame = (frameId: string): boolean => {
+      return frameId === "frame4";
     };
 
     // Function to draw circular cropped image
@@ -70,8 +75,8 @@ const ImageCanvas = forwardRef<HTMLCanvasElement, ImageCanvasProps>(
       return size;
     };
 
-    // Function to draw bottom-aligned frame
-    const drawBottomAlignedImage = (
+    // Function to draw bottom-left frame (Frame 2 - full size)
+    const drawBottomLeftFrame = (
       ctx: CanvasRenderingContext2D,
       img: HTMLImageElement,
       frameImg: HTMLImageElement,
@@ -81,15 +86,65 @@ const ImageCanvas = forwardRef<HTMLCanvasElement, ImageCanvasProps>(
       // Draw the full image first
       ctx.drawImage(img, 0, 0, canvasWidth, canvasHeight);
 
-      // Calculate frame dimensions (scale to be proportional to image width)
-      const frameScale = Math.min(canvasWidth * 0.4, 300); // Max 40% of width or 300px
-      const frameAspect = frameImg.width / frameImg.height;
-      const frameWidth = frameScale;
-      const frameHeight = frameScale / frameAspect;
+      // Frame 2 takes full canvas size and positions at bottom-left
+      const frameWidth = canvasWidth;
+      const frameHeight = canvasHeight;
+      const frameX = 0; // Bottom-left positioning
+      const frameY = 0;
 
-      // Position frame at bottom center
+      // Draw the frame at full size
+      ctx.drawImage(frameImg, frameX, frameY, frameWidth, frameHeight);
+    };
+
+    // Function to draw bottom-center frames (Frame 4, 5, 6 - larger size)
+    const drawBottomCenterFrame = (
+      ctx: CanvasRenderingContext2D,
+      img: HTMLImageElement,
+      frameImg: HTMLImageElement,
+      canvasWidth: number,
+      canvasHeight: number
+    ) => {
+      // Draw the full image first
+      ctx.drawImage(img, 0, 0, canvasWidth, canvasHeight);
+
+      // Calculate frame dimensions - make them larger and maintain aspect ratio
+      const frameAspect = frameImg.width / frameImg.height;
+
+      // Use 70% of canvas width or maintain original size if smaller
+      const maxFrameWidth = Math.min(canvasWidth * 0.7, frameImg.width);
+      const frameWidth = maxFrameWidth;
+      const frameHeight = frameWidth / frameAspect;
+
+      // Position frame at bottom center with minimal padding
       const frameX = (canvasWidth - frameWidth) / 2;
-      const frameY = canvasHeight - frameHeight - 20; // 20px padding from bottom
+      const frameY = canvasHeight - frameHeight - 10; // Only 10px padding from bottom
+
+      // Draw the frame
+      ctx.drawImage(frameImg, frameX, frameY, frameWidth, frameHeight);
+    };
+
+    // Function to draw bottom-left large frames (Frame 5, 6)
+    const drawBottomLeftLargeFrame = (
+      ctx: CanvasRenderingContext2D,
+      img: HTMLImageElement,
+      frameImg: HTMLImageElement,
+      canvasWidth: number,
+      canvasHeight: number
+    ) => {
+      // Draw the full image first
+      ctx.drawImage(img, 0, 0, canvasWidth, canvasHeight);
+
+      // Calculate frame dimensions - make them larger and maintain aspect ratio
+      const frameAspect = frameImg.width / frameImg.height;
+
+      // Use 70% of canvas width or maintain original size if smaller
+      const maxFrameWidth = Math.min(canvasWidth * 0.7, frameImg.width);
+      const frameWidth = maxFrameWidth;
+      const frameHeight = frameWidth / frameAspect;
+
+      // Position frame at bottom left with minimal padding
+      const frameX = 10; // Small left padding
+      const frameY = canvasHeight - frameHeight - 10; // Only 10px padding from bottom
 
       // Draw the frame
       ctx.drawImage(frameImg, frameX, frameY, frameWidth, frameHeight);
@@ -167,11 +222,37 @@ const ImageCanvas = forwardRef<HTMLCanvasElement, ImageCanvasProps>(
           // Handle regular frames - draw image first
           ctx.drawImage(img, 0, 0, canvasWidth, canvasHeight);
 
-          // Apply frame if selected and it's a bottom-aligned frame
-          if (frame && isBottomAlignedFrame(frame.id)) {
+          if (frame && isBottomLeftFrame(frame.id)) {
+            // Frames 2, 5, 6 - bottom-left positioning
             const frameImg = new Image();
             frameImg.onload = () => {
-              drawBottomAlignedImage(
+              if (frame.id === "frame2") {
+                // Frame 2 - full size coverage
+                drawBottomLeftFrame(
+                  ctx,
+                  img,
+                  frameImg,
+                  canvasWidth,
+                  canvasHeight
+                );
+              } else {
+                // Frames 5, 6 - large size, bottom-left
+                drawBottomLeftLargeFrame(
+                  ctx,
+                  img,
+                  frameImg,
+                  canvasWidth,
+                  canvasHeight
+                );
+              }
+            };
+            frameImg.crossOrigin = "anonymous";
+            frameImg.src = frame.imageUrl;
+          } else if (frame && isBottomCenterFrame(frame.id)) {
+            // Frame 4 - bottom-center, larger size
+            const frameImg = new Image();
+            frameImg.onload = () => {
+              drawBottomCenterFrame(
                 ctx,
                 img,
                 frameImg,
@@ -198,11 +279,15 @@ const ImageCanvas = forwardRef<HTMLCanvasElement, ImageCanvasProps>(
     }, [imageUrl, frame]);
 
     return (
-      <div className="flex justify-center">
+      <div className="flex justify-center w-full">
         <canvas
           ref={canvasRef}
           className="max-w-full h-auto rounded-xl shadow-2xl border border-gray-700"
-          style={{ maxHeight: "600px" }}
+          style={{
+            maxHeight: "70vh",
+            width: "auto",
+            height: "auto",
+          }}
         />
       </div>
     );
