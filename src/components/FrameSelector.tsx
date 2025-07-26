@@ -12,14 +12,17 @@ const getFrameTypeDescription = (frameId: string): string => {
   if (frameId === 'frame1' || frameId === 'frame3') {
     return 'Circular • Profile Picture';
   }
-  if (frameId === 'frame2' || frameId === 'frame5' || frameId === 'frame6') {
-    return 'Bottom Left • Large Frame';
+  if (frameId === 'frame2') {
+    return 'Bottom Left • Full Coverage';
   }
   if (frameId === 'frame4') {
     return 'Bottom Center • Large Frame';
   }
-  if (frameId === 'frame2') {
-    return 'Bottom Left • Full Coverage';
+  if (frameId === 'frame5') {
+    return 'Bottom Right • Large Frame';
+  }
+  if (frameId === 'frame6') {
+    return 'Bottom Right • Large Frame';
   }
   return 'Standard Frame';
 };
