@@ -17,11 +17,6 @@ const ImageCanvas = forwardRef<HTMLCanvasElement, ImageCanvasProps>(
       return frameId === 'frame1' || frameId === 'frame3';
     };
 
-    // Helper function to determine if frame is bottom-left aligned (Frame 2)
-    const isBottomLeftFrame = (frameId: string): boolean => {
-      return frameId === 'frame2';
-    };
-
     // Helper function to determine if frame should be bottom-left aligned
     const isBottomLeftFrame = (frameId: string): boolean => {
       return ['frame2', 'frame5', 'frame6'].includes(frameId);
