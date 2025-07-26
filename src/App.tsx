@@ -104,7 +104,7 @@ function App() {
             </div>
             <div className="w-8 h-8  flex items-center justify-center">
               <img
-                src="/photos/TRC1.png"
+                src="/photos/TRC.png"
                 alt="Logo"
                 className="w-12 h-auto"
                 loading="lazy"
