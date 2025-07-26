@@ -22,6 +22,11 @@ const ImageCanvas = forwardRef<HTMLCanvasElement, ImageCanvasProps>(
       return ['frame2', 'frame5', 'frame6'].includes(frameId);
     };
 
+    // Helper function to determine if frame should be bottom-center aligned
+    const isBottomCenterFrame = (frameId: string): boolean => {
+      return frameId === 'frame4';
+    };
+
     // Function to draw circular cropped image
     const drawCircularImage = (
       ctx: CanvasRenderingContext2D,
