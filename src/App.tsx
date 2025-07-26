@@ -85,18 +85,20 @@ function App() {
     link.download = `palestine-framed-${Date.now()}.png`;
     link.href = canvas.toDataURL("image/png");
     link.click();
-    toast.success(
-      "📥 Downloaded successfully! Remember Palestine with your duas and prayers.",
-      {
-        duration: 5000,
-        style: {
-          borderRadius: "10px",
-          background: "#1c1c1c",
-          color: "#fff",
-          fontSize: "16px",
-        },
-      }
-    );
+    toast.custom((t) => (
+      <div
+        className={`${
+          t.visible ? "animate-enter" : "animate-leave"
+        } bg-black text-white px-4 py-3 rounded-lg shadow-lg max-w-sm w-full`}
+      >
+        <div>
+          <p className="font-bold text-lg">📥 Downloaded Successfully!</p>
+          <p className="text-sm mt-1 leading-snug">
+            Remember <strong>Palestine</strong> with your duas 🤲
+          </p>
+        </div>
+      </div>
+    ));
   };
 
   return (
