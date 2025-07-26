@@ -12,8 +12,17 @@ const getFrameTypeDescription = (frameId: string): string => {
   if (frameId === "frame1" || frameId === "frame3") {
     return "Circular • Profile Picture";
   }
-  if (["frame2", "frame4", "frame5", "frame6"].includes(frameId)) {
-    return "Bottom Aligned • Full Image";
+  if (frameId === "frame2") {
+    return "Bottom Left • Full Coverage";
+  }
+  if (frameId === "frame4") {
+    return "Bottom Center • Large Frame";
+  }
+  if (frameId === "frame5") {
+    return "Bottom Right • Large Frame";
+  }
+  if (frameId === "frame6") {
+    return "Bottom Right • Large Frame";
   }
   return "Standard Frame";
 };
@@ -35,18 +44,18 @@ const FrameSelector: React.FC<FrameSelectorProps> = ({
   }
 
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {frames.map((frame) => (
         <button
           key={frame.id}
           onClick={() => onFrameSelect(frame)}
-          className={`group relative p-4 rounded-xl border-2 transition-all duration-200 hover:scale-105 ${
+          className={`group relative p-3 sm:p-4 rounded-xl border-2 transition-all duration-200 hover:scale-105 ${
             selectedFrame?.id === frame.id
               ? "border-green-500 bg-green-500/10 shadow-lg shadow-green-500/25"
               : "border-gray-700 hover:border-gray-600 bg-gray-800/50"
           }`}
         >
-          <div className="aspect-square bg-gray-800 rounded-lg overflow-hidden mb-3 relative">
+          <div className="aspect-square bg-gray-800 rounded-lg overflow-hidden mb-2 sm:mb-3 relative">
             <img
               src={frame.imageUrl}
               alt={frame.name}
@@ -80,10 +89,10 @@ const FrameSelector: React.FC<FrameSelectorProps> = ({
             )}
           </div>
           <div className="text-center">
-            <p className="text-sm font-medium text-gray-300 group-hover:text-white transition-colors duration-200 truncate mb-1">
+            <p className="text-xs sm:text-sm font-medium text-gray-300 group-hover:text-white transition-colors duration-200 truncate mb-1">
               {frame.name}
             </p>
-            <p className="text-xs text-gray-500 group-hover:text-gray-400 transition-colors duration-200">
+            <p className="text-xs text-gray-500 group-hover:text-gray-400 transition-colors duration-200 leading-tight">
               {getFrameTypeDescription(frame.id)}
             </p>
           </div>
