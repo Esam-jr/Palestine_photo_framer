@@ -22,11 +22,6 @@ const ImageCanvas = forwardRef<HTMLCanvasElement, ImageCanvasProps>(
       return frameId === 'frame2';
     };
 
-    // Helper function to determine if frame should be bottom-center aligned
-    const isBottomCenterFrame = (frameId: string): boolean => {
-      return frameId === 'frame4';
-    };
-
     // Helper function to determine if frame should be bottom-left aligned
     const isBottomLeftFrame = (frameId: string): boolean => {
       return ['frame2', 'frame5', 'frame6'].includes(frameId);
