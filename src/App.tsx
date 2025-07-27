@@ -412,7 +412,7 @@ function App() {
               </div>
               <div className="absolute right-0 top-1/2 -translate-y-1/2 pr-2">
                 <a
-                  href="https://github.com/your-username/palestine-photo-framer"
+                  href="https://github.com/Esam-jr/palestine-photo-framer"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group flex items-center space-x-2 text-gray-400 hover:text-white transition-colors duration-200"
